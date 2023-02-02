@@ -6,6 +6,8 @@ import com.andy.dao.UserDao;
 import com.andy.po.User;
 import com.andy.service.UserService;
 import com.andy.util.RedisUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return userDao.getAll();
+    }
+
+    @Override
+    public PageInfo<User> getAllUser(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> users = userDao.getAllUsers(pageNum,pageSize);
+        return new PageInfo<>(users);
     }
 
     @Override

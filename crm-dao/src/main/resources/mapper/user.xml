@@ -8,7 +8,7 @@
 
 
     <select id="getAll" resultType="com.andy.po.User">
-        select id, name from user
+        select id, name,age from user
     </select>
 
     <select id="findUserInforById" resultType="com.andy.po.User" parameterType="java.lang.Integer">

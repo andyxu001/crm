@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.andy.po.User;
 import com.andy.service.UserService;
 import com.andy.util.ResponseEntity;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,12 @@ public class UserController {
     public ResponseEntity<List<User>> getUsers(){
         List<User> userList = userService.getAll();
         return ResponseEntity.ok("查询用户列表成功",userList).build();
+    }
+
+    @ApiOperation(value = "获取所有用户")
+    @RequestMapping(value = "/getAllUsers",method = RequestMethod.GET)
+    public ResponseEntity<PageInfo<User>> getAllUsers(Integer pageNum,Integer pageSize){
+        return ResponseEntity.ok("分页查询用户成功",userService.getAllUser(pageNum,pageSize)).build();
     }
 
     @ApiOperation("根据用户ID获取用户信息")
