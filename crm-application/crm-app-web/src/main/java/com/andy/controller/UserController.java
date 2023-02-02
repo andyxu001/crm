@@ -1,0 +1,61 @@
+package com.andy.controller;
+
+import com.alibaba.fastjson.JSONObject;
+import com.andy.po.User;
+import com.andy.service.UserService;
+import com.andy.util.ResponseEntity;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
+import java.util.List;
+
+@Api(tags = "UserController",description = "用户管理")
+@RestController
+@RefreshScope
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private KafkaTemplate<Object,Object> kafkaTemplate;
+
+    @ApiOperation(value = "获取所有用户")
+    @RequestMapping(value = "/getusers",method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getUsers(){
+        List<User> userList = userService.getAll();
+        return ResponseEntity.ok("查询用户列表成功",userList).build();
+    }
+
+    @ApiOperation("根据用户ID获取用户信息")
+    @RequestMapping(value = "/findUserInforById/{id}",method = RequestMethod.GET)
+    public ResponseEntity<User> findUserInforById(@PathVariable("id") Integer id){
+
+        User userInforById = userService.findUserInforById(id);
+        return ResponseEntity.ok("查询用户成功",userInforById).build();
+    }
+
+    @ApiOperation("发送消息")
+    @RequestMapping(value = "/sendMsg",method = RequestMethod.POST)
+    public ResponseEntity<Void> sendMsg() {
+       for(int i = 1;i<1000;i++){
+           User user = new User();
+           user.setId(i);
+           user.setName("赵六--"+i);
+           user.setAge(i);
+           user.setBirth(new Date());
+           ListenableFuture<SendResult<Object, Object>> result = kafkaTemplate.send("test", 0,"test", JSONObject.toJSONString(user));
+       }
+       return ResponseEntity.ok("发送成功").build();
+    }
+}

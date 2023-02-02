@@ -1,0 +1,44 @@
+server:
+  port:  8000
+  servlet:
+    context-path: /crm
+
+
+spring:
+  application:
+    name: crm-gateway
+  profiles:
+    active: qa
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.0.114:8848
+        namespace: crm_${spring.profiles.active}
+      config:
+        server-addr: 192.168.0.114:8848
+        namespace: crm_${spring.profiles.active}
+        file-extension: yml
+        prefix: ${spring.application.name}
+        shared-dataids: database.yml,redis.yml,kafka.yml
+        refreshable-dataids: database.yml
+
+    gateway:
+      enabled: true
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: crm-web
+          uri: lb://crm-web
+          predicates:
+            - Path=/crm-web/**
+          filters:
+            - StripPrefix=0    #从前面截取一个，实际上就是截取url
+
+        - id: crm-wechat
+          uri: lb://crm-wechat
+          predicates:
+            - Path=/crm-wechat/**
+          filters:
+            - StripPrefix=0    #从前面截取一个，实际上就是截取url

@@ -1,0 +1,22 @@
+server:
+  port:  8001
+  servlet:
+    context-path: /crm-web
+
+spring:
+  application:
+    name: crm-web
+  profiles:
+    active: qa
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.0.114:8848
+        namespace: crm_${spring.profiles.active}
+      config:
+        server-addr: 192.168.0.114:8848
+        namespace: crm_${spring.profiles.active}
+        file-extension: yml
+        prefix: ${spring.application.name}
+        shared-dataids: database.yml,redis.yml,kafka.yml
+        refreshable-dataids: database.yml
