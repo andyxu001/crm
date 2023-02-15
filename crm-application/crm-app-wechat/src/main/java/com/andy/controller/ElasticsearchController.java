@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 import java.util.List;
 
-@Api(tags = "ElasticsearchController",description = "es api")
+@Api(tags = "ElasticsearchController",description = "es api文档")
 @RestController
 @RefreshScope
 public class ElasticsearchController {
