@@ -20,3 +20,10 @@ spring:
         prefix: ${spring.application.name}
         shared-dataids: database.yml,redis.yml,kafka.yml
         refreshable-dataids: database.yml
+    sentinel:
+      transport:
+        dashboard: 192.168.0.114:8080
+
+feign:
+  sentinel:
+    enabled: true

@@ -33,8 +33,9 @@
         <mysql.version>8.0.26</mysql.version>
         <fastjson.version>2.0.21</fastjson.version>
         <common.pool.version>2.7.0</common.pool.version>
-        <openFeign.version>2.2.6.RELEASE</openFeign.version>
+        <openFeign.version>2.2.2.RELEASE</openFeign.version>
         <nacos.version>2.1.1.RELEASE</nacos.version>
+        <elasticsearch.version>7.15.0</elasticsearch.version>
     </properties>
 
     <dependencies>
@@ -110,6 +111,13 @@
             <version>${nacos.version}</version>
         </dependency>
 
+        <!--sentinel -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <version>2.2.1.RELEASE</version>
+        </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -154,6 +162,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>-->
+
+            <!-- elasticsearch-->
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
 
             <!--swagger -->
             <dependency>

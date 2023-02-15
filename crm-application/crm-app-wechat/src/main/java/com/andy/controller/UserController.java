@@ -1,5 +1,7 @@
 package com.andy.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.andy.api.UserFeignClient;
 import com.andy.po.User;
 import com.andy.service.UserService;
 import com.andy.util.ResponseEntity;
@@ -19,11 +21,13 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserFeignClient userFeignClient;
 
     @ApiOperation(value = "获取所有用户")
+    @SentinelResource("getusers")
     @RequestMapping(value = "/getusers",method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getUsers(){
-        return ResponseEntity.ok("查询成功",userService.getAll()).build();
+    public ResponseEntity<String> getUsers(){
+        String s = userFeignClient.getUsers();
+        return ResponseEntity.ok("查询成功",s).build();
     }
 }

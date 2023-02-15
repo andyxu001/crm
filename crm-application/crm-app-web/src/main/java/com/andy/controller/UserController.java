@@ -1,5 +1,6 @@
 package com.andy.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSONObject;
 import com.andy.po.User;
 import com.andy.service.UserService;
