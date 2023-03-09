@@ -8,6 +8,7 @@ import com.andy.util.ResponseEntity;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -17,7 +18,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.channels.FileChannel;
 import java.util.Date;
 import java.util.List;
 
@@ -65,5 +71,14 @@ public class UserController {
            ListenableFuture<SendResult<Object, Object>> result = kafkaTemplate.send("test", 0,"test", JSONObject.toJSONString(user));
        }
        return ResponseEntity.ok("发送成功").build();
+    }
+
+    @ApiOperation("上传文件")
+    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    public ResponseEntity<Void> upload(MultipartFile file) throws IOException {
+        InputStream inputStream = file.getInputStream();
+        File dest = new File("e:/测试/"+file.getOriginalFilename());
+        FileUtils.copyInputStreamToFile(inputStream,dest);
+        return ResponseEntity.ok("上传成功!").build();
     }
 }

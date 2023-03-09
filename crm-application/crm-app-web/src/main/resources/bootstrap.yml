@@ -23,6 +23,12 @@ spring:
     sentinel:
       transport:
         dashboard: 192.168.0.114:8080
+##设置单个文件和所有文件的大小
+  http:
+  servlet:
+    multipart:
+      max-file-size:  3000MB
+      max-request-size: 3000MB
 
 feign:
   sentinel:
