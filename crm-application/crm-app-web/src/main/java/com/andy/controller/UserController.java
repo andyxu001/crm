@@ -4,6 +4,7 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSONObject;
 import com.andy.po.User;
 import com.andy.service.UserService;
+import com.andy.service.upload.UploadService;
 import com.andy.util.ResponseEntity;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -37,6 +38,9 @@ public class UserController {
 
     @Autowired
     private KafkaTemplate<Object,Object> kafkaTemplate;
+
+    @Autowired
+    private UploadService uploadService;
 
     @ApiOperation(value = "获取所有用户")
     @RequestMapping(value = "/getusers",method = RequestMethod.GET)
@@ -79,6 +83,13 @@ public class UserController {
         InputStream inputStream = file.getInputStream();
         File dest = new File("e:/测试/"+file.getOriginalFilename());
         FileUtils.copyInputStreamToFile(inputStream,dest);
+        return ResponseEntity.ok("上传成功!").build();
+    }
+
+    @ApiOperation("上传文件(阿里云oss)")
+    @RequestMapping(value = "/uploadWithOss",method = RequestMethod.POST)
+    public ResponseEntity<Void> uploadWithOss(MultipartFile file) throws IOException {
+        uploadService.uploadFile(file);
         return ResponseEntity.ok("上传成功!").build();
     }
 }

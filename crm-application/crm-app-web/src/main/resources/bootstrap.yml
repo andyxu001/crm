@@ -18,7 +18,7 @@ spring:
         namespace: crm_${spring.profiles.active}
         file-extension: yml
         prefix: ${spring.application.name}
-        shared-dataids: database.yml,redis.yml,kafka.yml
+        shared-dataids: database.yml,redis.yml,kafka.yml,oss.yml
         refreshable-dataids: database.yml
     sentinel:
       transport:
@@ -29,6 +29,7 @@ spring:
     multipart:
       max-file-size:  3000MB
       max-request-size: 3000MB
+
 
 feign:
   sentinel:
